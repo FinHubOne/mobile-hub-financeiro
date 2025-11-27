@@ -5,7 +5,6 @@ Loads transaction data and displays balance information.
 """
 
 import json
-import os
 from pathlib import Path
 
 
@@ -83,6 +82,24 @@ def display_transactions(transactions):
     print("="*80)
 
 
+def summarize_by_category(transactions):
+    """
+    Summarize transactions by category.
+    
+    Args:
+        transactions (list): List of transaction dictionaries
+        
+    Returns:
+        dict: Dictionary mapping categories to total amounts
+    """
+    categories = {}
+    for transaction in transactions:
+        category = transaction.get('category', 'Uncategorized')
+        amount = transaction.get('amount', 0)
+        categories[category] = categories.get(category, 0) + amount
+    return categories
+
+
 def main():
     """
     Main function to run the financial hub application.
@@ -113,12 +130,7 @@ def main():
     print(f"{'='*80}\n")
     
     # Display summary by category
-    categories = {}
-    for transaction in transactions:
-        category = transaction.get('category', 'Uncategorized')
-        amount = transaction.get('amount', 0)
-        categories[category] = categories.get(category, 0) + amount
-    
+    categories = summarize_by_category(transactions)
     print("SUMMARY BY CATEGORY:")
     print("-" * 40)
     for category, total in sorted(categories.items()):

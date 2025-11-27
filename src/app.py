@@ -133,21 +133,21 @@ def main(page: ft.Page):
         [
             ft.ElevatedButton(
                 "Pix",
-                icon=ft.icons.PIX,
+                icon=ft.Icons.ATTACH_MONEY,
                 on_click=on_pix_click,
                 bgcolor=ft.colors.BLUE_400,
                 color=ft.colors.WHITE,
             ),
             ft.ElevatedButton(
                 "Recarga",
-                icon=ft.icons.PHONE_ANDROID,
+                icon=ft.Icons.PHONE_ANDROID,
                 on_click=on_recarga_click,
                 bgcolor=ft.colors.GREEN_400,
                 color=ft.colors.WHITE,
             ),
             ft.ElevatedButton(
                 "Seguros",
-                icon=ft.icons.SECURITY,
+                icon=ft.Icons.SECURITY,
                 on_click=on_seguros_click,
                 bgcolor=ft.colors.ORANGE_400,
                 color=ft.colors.WHITE,
@@ -166,7 +166,7 @@ def main(page: ft.Page):
     if show_insurance:
         insurance_banner = ft.Container(
             content=ft.Row([
-                ft.Icon(ft.icons.DIRECTIONS_CAR, color=ft.colors.WHITE, size=40),
+                ft.Icon(ft.Icons.DIRECTIONS_CAR, color=ft.colors.WHITE, size=40),
                 ft.Column([
                     ft.Text(
                         "🎯 Oferta Especial: Seguro Auto",
@@ -199,15 +199,15 @@ def main(page: ft.Page):
         
         # Icon based on category
         icon_map = {
-            'Alimentação': ft.icons.RESTAURANT,
-            'Transporte': ft.icons.DIRECTIONS_CAR,
-            'Lazer': ft.icons.MOVIE,
-            'Saúde': ft.icons.MEDICAL_SERVICES,
-            'Educação': ft.icons.SCHOOL,
-            'Serviços': ft.icons.BUILD,
-            'Transferência': ft.icons.ATTACH_MONEY,
+            'Alimentação': ft.Icons.RESTAURANT,
+            'Transporte': ft.Icons.DIRECTIONS_CAR,
+            'Lazer': ft.Icons.MOVIE,
+            'Saúde': ft.Icons.MEDICAL_SERVICES,
+            'Educação': ft.Icons.SCHOOL,
+            'Serviços': ft.Icons.BUILD,
+            'Transferência': ft.Icons.ATTACH_MONEY,
         }
-        icon = icon_map.get(category, ft.icons.PAYMENT)
+        icon = icon_map.get(category, ft.Icons.PAYMENT)
         
         # Color based on amount
         amount_color = ft.colors.GREEN if amount >= 0 else ft.colors.RED

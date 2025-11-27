@@ -9,14 +9,18 @@ from pathlib import Path
 import flet as ft
 
 
+# Business rule constants
+TRANSPORT_THRESHOLD = 30  # Percentage threshold for showing insurance offer
+
+
 def load_transactions(filepath):
     """Load transactions from a JSON file."""
     try:
         with open(filepath, 'r', encoding='utf-8') as file:
             transactions = json.load(file)
         return transactions
-    except (FileNotFoundError, json.JSONDecodeError) as e:
-        print(f"Error loading transactions: {e}")
+    except (FileNotFoundError, json.JSONDecodeError):
+        # Return empty list on error - UI will handle gracefully
         return []
 
 
@@ -27,11 +31,15 @@ def calculate_balance(transactions):
 
 def calculate_transporte_percentage(transactions):
     """Calculate the percentage of expenses spent on Transporte."""
-    total_expenses = sum(abs(t['amount']) for t in transactions if t['amount'] < 0)
-    transporte_expenses = sum(
-        abs(t['amount']) for t in transactions 
-        if t['amount'] < 0 and t['category'] == 'Transporte'
-    )
+    total_expenses = 0
+    transporte_expenses = 0
+    
+    for t in transactions:
+        if t['amount'] < 0:
+            abs_amount = abs(t['amount'])
+            total_expenses += abs_amount
+            if t['category'] == 'Transporte':
+                transporte_expenses += abs_amount
     
     if total_expenses == 0:
         return 0
@@ -61,7 +69,7 @@ def main(page: ft.Page):
             title=ft.Text(f"{action_name}"),
             content=ft.Text("Operação realizada com sucesso!"),
             actions=[
-                ft.TextButton("OK", on_click=lambda _: close_dialog(dialog))
+                ft.TextButton("OK", on_click=lambda _, d=None: close_dialog(d or dialog))
             ],
         )
         page.dialog = dialog
@@ -69,8 +77,9 @@ def main(page: ft.Page):
         page.update()
     
     def close_dialog(dialog):
-        dialog.open = False
-        page.update()
+        if dialog:
+            dialog.open = False
+            page.update()
     
     # Header with balance
     header = ft.Container(
@@ -138,9 +147,9 @@ def main(page: ft.Page):
         margin=ft.margin.only(bottom=20)
     )
     
-    # Personalized offer banner (shown if Transporte > 30%)
+    # Personalized offer banner (shown if Transporte > TRANSPORT_THRESHOLD%)
     offer_banner = None
-    if transporte_pct > 30:
+    if transporte_pct > TRANSPORT_THRESHOLD:
         offer_banner = ft.Container(
             content=ft.Column([
                 ft.Row([

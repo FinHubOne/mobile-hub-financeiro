@@ -17,10 +17,23 @@ def load_transactions(file_path):
         
     Returns:
         list: List of transaction dictionaries
+    
+    Raises:
+        FileNotFoundError: If the data file is not found
+        json.JSONDecodeError: If the file contains invalid JSON
     """
-    with open(file_path, 'r', encoding='utf-8') as file:
-        transactions = json.load(file)
-    return transactions
+    try:
+        with open(file_path, 'r', encoding='utf-8') as file:
+            transactions = json.load(file)
+        return transactions
+    except FileNotFoundError:
+        print(f"Erro: Arquivo não encontrado: {file_path}")
+        print("Certifique-se de que o arquivo data/extrato.json existe.")
+        raise
+    except json.JSONDecodeError as e:
+        print(f"Erro: Arquivo JSON inválido: {file_path}")
+        print(f"Detalhes: {e}")
+        raise
 
 
 def calculate_balance(transactions):
@@ -65,7 +78,7 @@ def main():
     """Main function to execute the financial hub script."""
     # Get the path to the data file
     script_dir = os.path.dirname(os.path.abspath(__file__))
-    data_file = os.path.join(script_dir, '..', 'data', 'extrato.json')
+    data_file = os.path.normpath(os.path.join(script_dir, '..', 'data', 'extrato.json'))
     
     # Load transactions
     transactions = load_transactions(data_file)

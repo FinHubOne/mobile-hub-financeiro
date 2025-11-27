@@ -11,7 +11,7 @@
     "id": 2,
     "type": "pix",
     "category": "Transporte",
-    "amount": -25.00,
+    "amount": -85.00,
     "date": "2025-11-21",
     "description": "Uber - Centro ao Shopping"
   },
@@ -27,7 +27,7 @@
     "id": 4,
     "type": "recarga",
     "category": "Transporte",
-    "amount": -50.00,
+    "amount": -120.00,
     "date": "2025-11-22",
     "description": "Recarga Cartão Metrô"
   },
@@ -35,23 +35,23 @@
     "id": 5,
     "type": "pix",
     "category": "Lazer",
-    "amount": -80.00,
+    "amount": -50.00,
     "date": "2025-11-22",
     "description": "Cinema - Ingressos"
   },
   {
     "id": 6,
     "type": "compra",
-    "category": "Saúde",
-    "amount": -120.00,
+    "category": "Transporte",
+    "amount": -95.00,
     "date": "2025-11-23",
-    "description": "Farmácia - Medicamentos"
+    "description": "Posto de Gasolina Shell"
   },
   {
     "id": 7,
     "type": "pix",
-    "category": "Transferência",
-    "amount": 500.00,
+    "category": "Salário",
+    "amount": 3000.00,
     "date": "2025-11-23",
     "description": "Salário recebido"
   },
@@ -67,17 +67,17 @@
     "id": 9,
     "type": "pix",
     "category": "Transporte",
-    "amount": -15.00,
+    "amount": -65.00,
     "date": "2025-11-24",
     "description": "Corrida 99"
   },
   {
     "id": 10,
     "type": "compra",
-    "category": "Educação",
-    "amount": -95.00,
+    "category": "Lazer",
+    "amount": -75.00,
     "date": "2025-11-25",
-    "description": "Livraria - Livros técnicos"
+    "description": "Parque de diversões"
   },
   {
     "id": 11,
@@ -89,19 +89,19 @@
   },
   {
     "id": 12,
-    "type": "recarga",
-    "category": "Serviços",
-    "amount": -30.00,
+    "type": "pix",
+    "category": "Transporte",
+    "amount": -42.00,
     "date": "2025-11-26",
-    "description": "Recarga celular"
+    "description": "Uber - Shopping ao trabalho"
   },
   {
     "id": 13,
-    "type": "pix",
-    "category": "Lazer",
-    "amount": -60.00,
+    "type": "compra",
+    "category": "Transporte",
+    "amount": -110.00,
     "date": "2025-11-26",
-    "description": "Streaming - Assinatura mensal"
+    "description": "Posto de Gasolina Ipiranga"
   },
   {
     "id": 14,
@@ -115,7 +115,7 @@
     "id": 15,
     "type": "pix",
     "category": "Transporte",
-    "amount": -22.00,
+    "amount": -55.00,
     "date": "2025-11-27",
     "description": "Uber - Casa ao trabalho"
   }

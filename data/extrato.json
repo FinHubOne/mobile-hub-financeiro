@@ -9,11 +9,7 @@
   },
   {
     "id": 2,
-    "titulo": "Uber - Centro ao Shopping",
-    "valor": -35.00,
-    "data": "2025-11-21",
-    "categoria": "Transporte",
-    "tipo": "pix"
+
   },
   {
     "id": 3,
@@ -25,35 +21,7 @@
   },
   {
     "id": 4,
-    "titulo": "Recarga Cartão Metrô",
-    "valor": -80.00,
-    "data": "2025-11-22",
-    "categoria": "Transporte",
-    "tipo": "recarga"
-  },
-  {
-    "id": 5,
-    "titulo": "Cinema - Ingressos",
-    "valor": -50.00,
-    "data": "2025-11-22",
-    "categoria": "Lazer",
-    "tipo": "pix"
-  },
-  {
-    "id": 6,
-    "titulo": "Salário recebido",
-    "valor": 3000.00,
-    "data": "2025-11-23",
-    "categoria": "Salário",
-    "tipo": "pix"
-  },
-  {
-    "id": 7,
-    "titulo": "Padaria Pão Quente",
-    "valor": -32.00,
-    "data": "2025-11-24",
-    "categoria": "Alimentação",
-    "tipo": "compra"
+ main
   },
   {
     "id": 8,
@@ -65,19 +33,7 @@
   },
   {
     "id": 9,
-    "titulo": "Combustível - Posto Shell",
-    "valor": -250.00,
-    "data": "2025-11-25",
-    "categoria": "Transporte",
-    "tipo": "compra"
-  },
-  {
-    "id": 10,
-    "titulo": "Lanchonete da esquina",
-    "valor": -28.50,
-    "data": "2025-11-25",
-    "categoria": "Alimentação",
-    "tipo": "compra"
+main
   },
   {
     "id": 11,
@@ -89,26 +45,6 @@
   },
   {
     "id": 12,
-    "titulo": "Mercado do bairro",
-    "valor": -42.80,
-    "data": "2025-11-27",
-    "categoria": "Alimentação",
-    "tipo": "compra"
-  },
-  {
-    "id": 13,
-    "titulo": "Uber - Casa ao trabalho",
-    "valor": -30.00,
-    "data": "2025-11-27",
-    "categoria": "Transporte",
-    "tipo": "pix"
-  },
-  {
-    "id": 14,
-    "titulo": "Estacionamento Shopping",
-    "valor": -25.00,
-    "data": "2025-11-26",
-    "categoria": "Transporte",
-    "tipo": "compra"
+main
   }
 ]

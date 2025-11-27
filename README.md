@@ -1,6 +1,6 @@
 # Mobile Hub Financeiro 🏦
 
-A simple financial hub MVP for the Hackathon project. This application helps track and categorize financial transactions.
+A mobile financial hub MVP built with the Flet framework for the Hackathon project. This application helps track and categorize financial transactions with a modern, interactive UI.
 
 ## Project Structure
 
@@ -9,21 +9,26 @@ mobile-hub-financeiro/
 ├── data/
 │   └── extrato.json          # Mock transaction data
 ├── src/
-│   └── main.py               # Main application logic
+│   ├── app.py                # Flet UI application
+│   └── main.py               # CLI application (legacy)
+├── requirements.txt          # Python dependencies
 └── README.md                 # This file
 ```
 
 ## Features
 
+- **Interactive UI**: Built with Flet framework for a native mobile-like experience
 - **Transaction Management**: Load and display financial transactions from JSON data
-- **Balance Calculation**: Automatically calculate total balance from all transactions
+- **Balance Calculation**: Automatically calculate total balance (entradas - saidas)
+- **Smart Offers**: Personalized offers based on spending patterns (e.g., Auto Insurance offer when transport spending exceeds R$ 500)
+- **Quick Actions**: Simulate Pix, Recarga, and Seguros operations with interactive dialogs
+- **Color-Coded Transactions**: Green for income (entrada), Red for expenses (saida)
 - **Category Tracking**: Organize transactions by category (Alimentação, Transporte, Lazer, etc.)
-- **Transaction Types**: Support for different transaction types (PIX, compra, recarga)
 
 ## Requirements
 
 - Python 3.7 or higher
-- No external dependencies required (uses only Python standard library)
+- Flet framework
 
 ## How to Run
 
@@ -32,53 +37,76 @@ mobile-hub-financeiro/
    cd mobile-hub-financeiro
    ```
 
-2. **Run the main script:**
+2. **Install dependencies:**
    ```bash
-   python3 src/main.py
+   pip install -r requirements.txt
+   ```
+
+3. **Run the Flet app:**
+   ```bash
+   flet run src/app.py
    ```
 
    Or make it executable and run directly:
    ```bash
-   chmod +x src/main.py
-   ./src/main.py
+   chmod +x src/app.py
+   ./src/app.py
    ```
 
-## Sample Output
+## Application Interface
 
-The application will:
-1. Load transactions from `data/extrato.json`
-2. Display all transactions with details (ID, date, type, category, amount, description)
-3. Calculate and show the total balance
-4. Provide a summary of expenses/income by category
+The Flet application provides:
+
+- **Header**: Displays your total balance prominently at the top
+- **Action Buttons**: Quick access to Pix, Recarga, and Seguros features
+- **Smart Offers**: Personalized offers based on your spending (e.g., "Oferta Especial: Seguro Auto com 20% de desconto!" when transport spending > R$ 500)
+- **Statement List**: Complete transaction history with:
+  - Transaction title and date
+  - Color-coded amounts (Green for income, Red for expenses)
+  - Easy-to-read card layout
 
 ## Data Format
 
-The `data/extrato.json` file contains an array of transaction objects with the following structure:
+The `data/extrato.json` file contains a JSON object with a list of transactions:
 
 ```json
 {
-  "id": 1,
-  "type": "compra",
-  "category": "Alimentação",
-  "amount": -45.50,
-  "date": "2025-11-20",
-  "description": "Supermercado Extra"
+  "transactions": [
+    {
+      "id": 1,
+      "title": "Salário",
+      "type": "entrada",
+      "category": "Salário",
+      "amount": 5000.00,
+      "date": "2025-11-27"
+    },
+    {
+      "id": 2,
+      "title": "Supermercado Extra",
+      "type": "saida",
+      "category": "Alimentação",
+      "amount": 45.50,
+      "date": "2025-11-20"
+    }
+  ]
 }
 ```
 
 ### Transaction Fields:
 - **id**: Unique identifier for the transaction
-- **type**: Transaction type (pix, compra, recarga)
-- **category**: Category of the expense/income (Alimentação, Transporte, Lazer, etc.)
-- **amount**: Transaction amount (negative for expenses, positive for income)
+- **title**: Transaction title/description
+- **type**: Transaction type (`entrada` for income, `saida` for expenses)
+- **category**: Category of the transaction (Salário, Alimentação, Transporte, Lazer, etc.)
+- **amount**: Transaction amount (always positive; type determines if it's added or subtracted)
 - **date**: Transaction date in YYYY-MM-DD format
-- **description**: Description of the transaction
 
-## Related Issues
+## Legacy CLI Tool
 
-This implementation addresses:
-- Issue #1: Basic project structure
-- Issue #2: Transaction categorization demonstration
+The project also includes a legacy command-line tool (`src/main.py`) that displays transactions in the terminal:
+
+```bash
+python3 src/main.py
+```
 
 ## Contributing
 

@@ -60,10 +60,13 @@ def main(page: ft.Page):
     
     # Cores modernas (roxo inspirado no Nubank)
     PRIMARY_COLOR = "#820AD1"
-    SECONDARY_COLOR = "#6A0DAD"
     SUCCESS_COLOR = "#00C853"
     DANGER_COLOR = "#D32F2F"
     CARD_BG = "#FFFFFF"
+    OFFER_COLOR = "#FF6B35"
+    
+    # Tamanhos
+    ICON_SIZE = 40
     
     # Carregar dados
     transactions = load_transactions()
@@ -167,7 +170,7 @@ def main(page: ft.Page):
     if show_offer:
         offer_card = ft.Container(
             content=ft.Row([
-                ft.Icon(ft.icons.DIRECTIONS_CAR, color="white", size=40),
+                ft.Icon(ft.icons.DIRECTIONS_CAR, color="white", size=ICON_SIZE),
                 ft.Column([
                     ft.Text(
                         "🎉 Oferta Especial!",
@@ -185,7 +188,7 @@ def main(page: ft.Page):
                 ),
             ]),
             padding=20,
-            bgcolor="#FF6B35",
+            bgcolor=OFFER_COLOR,
             border_radius=10,
         )
     

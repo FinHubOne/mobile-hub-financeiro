@@ -1,85 +1,113 @@
 # Mobile Hub Financeiro 🏦
 
-A simple financial hub MVP for the Hackathon project. This application helps track and categorize financial transactions.
+MVP do Hub Financeiro Móvel desenvolvido com Python e Flet para o Hackathon. Uma aplicação desktop/mobile moderna para gestão financeira com extrato inteligente e personalização.
 
-## Project Structure
+## 📋 Project Structure
 
 ```
 mobile-hub-financeiro/
 ├── data/
-│   └── extrato.json          # Mock transaction data
+│   └── extrato.json          # Dados de transações financeiras
 ├── src/
-│   └── main.py               # Main application logic
-└── README.md                 # This file
+│   ├── app.py                # Aplicação Flet (GUI)
+│   └── main.py               # Script CLI (legado)
+├── requirements.txt          # Dependências Python
+└── README.md                 # Este arquivo
 ```
 
-## Features
+## ✨ Features
 
-- **Transaction Management**: Load and display financial transactions from JSON data
-- **Balance Calculation**: Automatically calculate total balance from all transactions
-- **Category Tracking**: Organize transactions by category (Alimentação, Transporte, Lazer, etc.)
-- **Transaction Types**: Support for different transaction types (PIX, compra, recarga)
+### Funcionalidades Principais:
+- **💰 Saldo Total**: Exibição do saldo atual (entradas - saídas)
+- **⚡ Ações Rápidas**: Menu com botões para Pix, Recarga e Seguros
+- **📊 Extrato Inteligente**: Lista de transações com visual moderno
+  - Entradas em Verde ⬆️
+  - Saídas em Vermelho ⬇️
+- **🎯 Personalização com Heurística**: 
+  - Análise automática de gastos por categoria
+  - Oferta especial de Seguro Auto quando gastos com Transporte > 30%
 
-## Requirements
+### Tecnologias:
+- Python 3.7+
+- Flet (Framework para apps desktop/mobile)
+- Interface moderna com cores inspiradas em fintechs (Nubank)
 
-- Python 3.7 or higher
-- No external dependencies required (uses only Python standard library)
+## 🚀 Como Instalar e Executar
 
-## How to Run
+### 1. Instalar Dependências
 
-1. **Navigate to the project directory:**
-   ```bash
-   cd mobile-hub-financeiro
-   ```
+```bash
+pip install -r requirements.txt
+```
 
-2. **Run the main script:**
-   ```bash
-   python3 src/main.py
-   ```
+### 2. Executar a Aplicação
 
-   Or make it executable and run directly:
-   ```bash
-   chmod +x src/main.py
-   ./src/main.py
-   ```
+```bash
+flet run src/app.py
+```
 
-## Sample Output
+Ou com Python:
 
-The application will:
-1. Load transactions from `data/extrato.json`
-2. Display all transactions with details (ID, date, type, category, amount, description)
-3. Calculate and show the total balance
-4. Provide a summary of expenses/income by category
+```bash
+python -m flet run src/app.py
+```
 
-## Data Format
+A aplicação abrirá em uma janela desktop mostrando o Hub Financeiro.
 
-The `data/extrato.json` file contains an array of transaction objects with the following structure:
+## 📱 Interface
+
+A aplicação possui:
+
+1. **Header com Saldo**: Mostra o saldo total atualizado
+2. **Ações Rápidas**: 3 botões para operações comuns (Pix, Recarga, Seguros)
+3. **Card de Oferta**: Aparece automaticamente se gastos com Transporte > 30%
+4. **Extrato Inteligente**: Lista scrollable de todas as transações
+
+## 📊 Formato dos Dados
+
+O arquivo `data/extrato.json` contém transações no formato:
 
 ```json
 {
   "id": 1,
-  "type": "compra",
-  "category": "Alimentação",
-  "amount": -45.50,
-  "date": "2025-11-20",
-  "description": "Supermercado Extra"
+  "titulo": "Supermercado Extra",
+  "valor": -45.50,
+  "data": "2025-11-20",
+  "categoria": "Alimentação",
+  "tipo": "compra"
 }
 ```
 
-### Transaction Fields:
-- **id**: Unique identifier for the transaction
-- **type**: Transaction type (pix, compra, recarga)
-- **category**: Category of the expense/income (Alimentação, Transporte, Lazer, etc.)
-- **amount**: Transaction amount (negative for expenses, positive for income)
-- **date**: Transaction date in YYYY-MM-DD format
-- **description**: Description of the transaction
+### Campos:
+- **id**: Identificador único
+- **titulo**: Descrição da transação
+- **valor**: Valor (negativo para gastos, positivo para receitas)
+- **data**: Data no formato YYYY-MM-DD
+- **categoria**: Categoria (Alimentação, Transporte, Lazer, Salário, etc.)
+- **tipo**: Tipo da transação (pix, compra, recarga)
 
-## Related Issues
+## 🎨 Design
 
-This implementation addresses:
-- Issue #1: Basic project structure
-- Issue #2: Transaction categorization demonstration
+- **Cores**: Roxo (#820AD1) como cor principal (inspirado Nubank)
+- **Layout**: Cards brancos sobre fundo cinza claro
+- **Tipografia**: Hierarquia clara com títulos em bold
+- **Responsivo**: Interface adaptável para diferentes tamanhos de tela
 
-## Contributing
+## 🏆 Hackathon Requirements
 
-This is a Hackathon MVP project. Feel free to expand and improve the functionality!
+Este MVP atende aos requisitos:
+- ✅ Integração de serviços (simulação via botões)
+- ✅ Extrato inteligente com visualização clara
+- ✅ Personalização básica com heurística de gastos
+
+## 🛠️ Script CLI (Legado)
+
+Ainda é possível executar a versão CLI:
+
+```bash
+python3 src/main.py
+```
+
+## 📄 License
+
+MIT - Projeto Hackathon

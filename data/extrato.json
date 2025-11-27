@@ -1,122 +1,50 @@
 [
   {
     "id": 1,
-    "type": "compra",
-    "category": "Alimentação",
-    "amount": -45.50,
-    "date": "2025-11-20",
-    "description": "Supermercado Extra"
+    "titulo": "Supermercado Extra",
+    "valor": -45.50,
+    "data": "2025-11-20",
+    "categoria": "Alimentação",
+    "tipo": "compra"
   },
   {
     "id": 2,
-    "type": "pix",
-    "category": "Transporte",
-    "amount": -85.00,
-    "date": "2025-11-21",
-    "description": "Uber - Centro ao Shopping"
+
   },
   {
     "id": 3,
-    "type": "compra",
-    "category": "Alimentação",
-    "amount": -18.90,
-    "date": "2025-11-21",
-    "description": "Restaurante Bom Sabor"
+    "titulo": "Restaurante Bom Sabor",
+    "valor": -18.90,
+    "data": "2025-11-21",
+    "categoria": "Alimentação",
+    "tipo": "compra"
   },
   {
     "id": 4,
-    "type": "recarga",
-    "category": "Transporte",
-    "amount": -120.00,
-    "date": "2025-11-22",
-    "description": "Recarga Cartão Metrô"
-  },
-  {
-    "id": 5,
-    "type": "pix",
-    "category": "Lazer",
-    "amount": -50.00,
-    "date": "2025-11-22",
-    "description": "Cinema - Ingressos"
-  },
-  {
-    "id": 6,
-    "type": "compra",
-    "category": "Transporte",
-    "amount": -95.00,
-    "date": "2025-11-23",
-    "description": "Posto de Gasolina Shell"
-  },
-  {
-    "id": 7,
-    "type": "pix",
-    "category": "Salário",
-    "amount": 3000.00,
-    "date": "2025-11-23",
-    "description": "Salário recebido"
+ main
   },
   {
     "id": 8,
-    "type": "compra",
-    "category": "Alimentação",
-    "amount": -32.00,
-    "date": "2025-11-24",
-    "description": "Padaria Pão Quente"
+    "titulo": "Corrida 99",
+    "valor": -28.00,
+    "data": "2025-11-24",
+    "categoria": "Transporte",
+    "tipo": "pix"
   },
   {
     "id": 9,
-    "type": "pix",
-    "category": "Transporte",
-    "amount": -65.00,
-    "date": "2025-11-24",
-    "description": "Corrida 99"
-  },
-  {
-    "id": 10,
-    "type": "compra",
-    "category": "Lazer",
-    "amount": -75.00,
-    "date": "2025-11-25",
-    "description": "Parque de diversões"
+main
   },
   {
     "id": 11,
-    "type": "compra",
-    "category": "Alimentação",
-    "amount": -28.50,
-    "date": "2025-11-25",
-    "description": "Lanchonete da esquina"
+    "titulo": "Streaming - Assinatura mensal",
+    "valor": -39.90,
+    "data": "2025-11-26",
+    "categoria": "Lazer",
+    "tipo": "pix"
   },
   {
     "id": 12,
-    "type": "pix",
-    "category": "Transporte",
-    "amount": -42.00,
-    "date": "2025-11-26",
-    "description": "Uber - Shopping ao trabalho"
-  },
-  {
-    "id": 13,
-    "type": "compra",
-    "category": "Transporte",
-    "amount": -110.00,
-    "date": "2025-11-26",
-    "description": "Posto de Gasolina Ipiranga"
-  },
-  {
-    "id": 14,
-    "type": "compra",
-    "category": "Alimentação",
-    "amount": -42.80,
-    "date": "2025-11-27",
-    "description": "Mercado do bairro"
-  },
-  {
-    "id": 15,
-    "type": "pix",
-    "category": "Transporte",
-    "amount": -55.00,
-    "date": "2025-11-27",
-    "description": "Uber - Casa ao trabalho"
+main
   }
 ]

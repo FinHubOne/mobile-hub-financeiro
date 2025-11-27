@@ -59,7 +59,7 @@ def main(page: ft.Page):
     def show_alert(e, feature_name):
         dlg = ft.AlertDialog(
             title=ft.Text(feature_name),
-            content=ft.Text("Funcionalidade simulada com sucesso!"),
+            content=ft.Text("Operation successful (Simulation)"),
             actions=[
                 ft.TextButton("OK", on_click=lambda _: close_dialog(dlg))
             ],
@@ -209,7 +209,7 @@ def main(page: ft.Page):
     # Build the page
     page_content = [
         ft.Text(
-            "🏦 Mobile Hub Financeiro",
+            "FinHub",
             size=28,
             weight=ft.FontWeight.BOLD,
             text_align=ft.TextAlign.CENTER,

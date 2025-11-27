@@ -1,0 +1,58 @@
+[
+  {
+    "id": 1,
+    "date": "2024-01-15",
+    "description": "Salário",
+    "value": 5000.00,
+    "type": "entrada",
+    "category": "Salário"
+  },
+  {
+    "id": 2,
+    "date": "2024-01-16",
+    "description": "Supermercado",
+    "value": 320.50,
+    "type": "saida",
+    "category": "Alimentação"
+  },
+  {
+    "id": 3,
+    "date": "2024-01-17",
+    "description": "Gasolina",
+    "value": 180.00,
+    "type": "saida",
+    "category": "Transporte"
+  },
+  {
+    "id": 4,
+    "date": "2024-01-18",
+    "description": "Freelance",
+    "value": 1200.00,
+    "type": "entrada",
+    "category": "Trabalho Extra"
+  },
+  {
+    "id": 5,
+    "date": "2024-01-19",
+    "description": "Restaurante",
+    "value": 95.80,
+    "type": "saida",
+    "category": "Alimentação"
+  },
+  {
+    "id": 6,
+    "date": "2024-01-20",
+    "description": "Conta de Luz",
+    "value": 150.00,
+    "type": "saida",
+    "category": "Moradia"
+  },
+  {
+    "id": 7,
+    "date": "2024-01-21",
+    "description": "Academia",
+    "value": 120.00,
+    "type": "saida",
+    "category": "Saúde"
+  }
+]

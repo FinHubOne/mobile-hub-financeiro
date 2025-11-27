@@ -1,122 +1,146 @@
 [
   {
     "id": 1,
-    "type": "compra",
+    "type": "income",
+    "category": "Salário",
+    "amount": 3500.00,
+    "date": "2025-11-01",
+    "description": "Salário mensal"
+  },
+  {
+    "id": 2,
+    "type": "outcome",
     "category": "Alimentação",
     "amount": -45.50,
     "date": "2025-11-20",
     "description": "Supermercado Extra"
   },
   {
-    "id": 2,
-    "type": "pix",
+    "id": 3,
+    "type": "outcome",
     "category": "Transporte",
     "amount": -25.00,
     "date": "2025-11-21",
     "description": "Uber - Centro ao Shopping"
   },
   {
-    "id": 3,
-    "type": "compra",
+    "id": 4,
+    "type": "outcome",
     "category": "Alimentação",
     "amount": -18.90,
     "date": "2025-11-21",
     "description": "Restaurante Bom Sabor"
   },
   {
-    "id": 4,
-    "type": "recarga",
+    "id": 5,
+    "type": "outcome",
     "category": "Transporte",
     "amount": -50.00,
     "date": "2025-11-22",
     "description": "Recarga Cartão Metrô"
   },
   {
-    "id": 5,
-    "type": "pix",
+    "id": 6,
+    "type": "outcome",
     "category": "Lazer",
     "amount": -80.00,
     "date": "2025-11-22",
     "description": "Cinema - Ingressos"
   },
   {
-    "id": 6,
-    "type": "compra",
-    "category": "Saúde",
+    "id": 7,
+    "type": "outcome",
+    "category": "Transporte",
     "amount": -120.00,
     "date": "2025-11-23",
-    "description": "Farmácia - Medicamentos"
-  },
-  {
-    "id": 7,
-    "type": "pix",
-    "category": "Transferência",
-    "amount": 500.00,
-    "date": "2025-11-23",
-    "description": "Salário recebido"
+    "description": "Gasolina - Posto Shell"
   },
   {
     "id": 8,
-    "type": "compra",
+    "type": "outcome",
+    "category": "Transporte",
+    "amount": -85.00,
+    "date": "2025-11-23",
+    "description": "Uber - Viagem aeroporto"
+  },
+  {
+    "id": 9,
+    "type": "outcome",
     "category": "Alimentação",
     "amount": -32.00,
     "date": "2025-11-24",
     "description": "Padaria Pão Quente"
   },
   {
-    "id": 9,
-    "type": "pix",
+    "id": 10,
+    "type": "outcome",
     "category": "Transporte",
     "amount": -15.00,
     "date": "2025-11-24",
     "description": "Corrida 99"
   },
   {
-    "id": 10,
-    "type": "compra",
-    "category": "Educação",
-    "amount": -95.00,
-    "date": "2025-11-25",
-    "description": "Livraria - Livros técnicos"
+    "id": 11,
+    "type": "outcome",
+    "category": "Transporte",
+    "amount": -180.00,
+    "date": "2025-11-24",
+    "description": "Mecânico - Revisão do carro"
   },
   {
-    "id": 11,
-    "type": "compra",
+    "id": 12,
+    "type": "outcome",
     "category": "Alimentação",
     "amount": -28.50,
     "date": "2025-11-25",
     "description": "Lanchonete da esquina"
   },
   {
-    "id": 12,
-    "type": "recarga",
-    "category": "Serviços",
-    "amount": -30.00,
-    "date": "2025-11-26",
-    "description": "Recarga celular"
+    "id": 13,
+    "type": "outcome",
+    "category": "Transporte",
+    "amount": -95.00,
+    "date": "2025-11-25",
+    "description": "Gasolina - Posto Ipiranga"
   },
   {
-    "id": 13,
-    "type": "pix",
+    "id": 14,
+    "type": "outcome",
     "category": "Lazer",
     "amount": -60.00,
     "date": "2025-11-26",
     "description": "Streaming - Assinatura mensal"
   },
   {
-    "id": 14,
-    "type": "compra",
+    "id": 15,
+    "type": "outcome",
     "category": "Alimentação",
     "amount": -42.80,
     "date": "2025-11-27",
     "description": "Mercado do bairro"
   },
   {
-    "id": 15,
-    "type": "pix",
+    "id": 16,
+    "type": "outcome",
     "category": "Transporte",
     "amount": -22.00,
     "date": "2025-11-27",
     "description": "Uber - Casa ao trabalho"
+  },
+  {
+    "id": 17,
+    "type": "outcome",
+    "category": "Transporte",
+    "amount": -35.00,
+    "date": "2025-11-27",
+    "description": "Estacionamento Shopping"
+  },
+  {
+    "id": 18,
+    "type": "outcome",
+    "category": "Transporte",
+    "amount": -110.00,
+    "date": "2025-11-28",
+    "description": "Gasolina - Posto BR"
   }
 ]

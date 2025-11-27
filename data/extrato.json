@@ -118,5 +118,45 @@
     "amount": -22.00,
     "date": "2025-11-27",
     "description": "Uber - Casa ao trabalho"
+  },
+  {
+    "id": 16,
+    "type": "compra",
+    "category": "Transporte",
+    "amount": -150.00,
+    "date": "2025-11-18",
+    "description": "Posto Shell - Gasolina"
+  },
+  {
+    "id": 17,
+    "type": "compra",
+    "category": "Transporte",
+    "amount": -280.00,
+    "date": "2025-11-19",
+    "description": "Oficina Mecânica - Manutenção"
+  },
+  {
+    "id": 18,
+    "type": "pix",
+    "category": "Transporte",
+    "amount": -35.00,
+    "date": "2025-11-20",
+    "description": "Uber - Aeroporto"
+  },
+  {
+    "id": 19,
+    "type": "compra",
+    "category": "Transporte",
+    "amount": -120.00,
+    "date": "2025-11-23",
+    "description": "Posto Ipiranga - Gasolina"
+  },
+  {
+    "id": 20,
+    "type": "pix",
+    "category": "Transporte",
+    "amount": -28.00,
+    "date": "2025-11-26",
+    "description": "Uber - Shopping ao centro"
   }
 ]

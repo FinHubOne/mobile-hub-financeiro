@@ -1,6 +1,6 @@
 # Mobile Hub Financeiro 🏦
 
-A simple financial hub MVP for the Hackathon project. This application helps track and categorize financial transactions.
+A mobile financial hub MVP built with Flet for the Hackathon project. This application helps track and categorize financial transactions with personalized insurance offers.
 
 ## Project Structure
 
@@ -9,47 +9,78 @@ mobile-hub-financeiro/
 ├── data/
 │   └── extrato.json          # Mock transaction data
 ├── src/
-│   └── main.py               # Main application logic
+│   ├── app.py                # Flet UI application (NEW)
+│   └── main.py               # CLI application (legacy)
+├── requirements.txt          # Python dependencies
 └── README.md                 # This file
 ```
 
 ## Features
 
+- **Interactive Dashboard**: Modern UI built with Flet framework
 - **Transaction Management**: Load and display financial transactions from JSON data
 - **Balance Calculation**: Automatically calculate total balance from all transactions
 - **Category Tracking**: Organize transactions by category (Alimentação, Transporte, Lazer, etc.)
-- **Transaction Types**: Support for different transaction types (PIX, compra, recarga)
+- **Quick Actions**: Buttons for Pix, Recarga, and Seguros with success modals
+- **Smart Recommendations**: Personalized insurance offers based on spending patterns
+- **Heuristic Logic**: Displays special car insurance offer when transport spending exceeds 30% of total expenses
 
 ## Requirements
 
 - Python 3.7 or higher
-- No external dependencies required (uses only Python standard library)
+- Flet 0.24.1 or higher (see `requirements.txt`)
 
-## How to Run
+## Installation
 
 1. **Navigate to the project directory:**
    ```bash
    cd mobile-hub-financeiro
    ```
 
-2. **Run the main script:**
+2. **Install dependencies:**
    ```bash
-   python3 src/main.py
+   pip install -r requirements.txt
    ```
 
-   Or make it executable and run directly:
-   ```bash
-   chmod +x src/main.py
-   ./src/main.py
-   ```
+## How to Run
 
-## Sample Output
+### Flet UI Application (Recommended)
 
-The application will:
-1. Load transactions from `data/extrato.json`
-2. Display all transactions with details (ID, date, type, category, amount, description)
-3. Calculate and show the total balance
-4. Provide a summary of expenses/income by category
+Run the modern Flet-based UI application:
+
+```bash
+python3 src/app.py
+```
+
+Or make it executable and run directly:
+```bash
+chmod +x src/app.py
+./src/app.py
+```
+
+This will launch a window with the interactive financial dashboard.
+
+### CLI Application (Legacy)
+
+Run the command-line interface version:
+
+```bash
+python3 src/main.py
+```
+
+## Application Features
+
+The Flet UI application provides:
+
+1. **Balance Overview**: See your total balance at a glance
+2. **Transaction History**: Browse all transactions with icons and categories
+3. **Quick Actions**:
+   - **Pix**: Simulate instant transfers
+   - **Recarga**: Simulate phone/transport recharges
+   - **Seguros**: Simulate insurance purchases
+4. **Smart Recommendations**: 
+   - If your transport spending exceeds 30% of total expenses, you'll see a special car insurance offer banner
+   - This personalization helps you save money on relevant services
 
 ## Data Format
 

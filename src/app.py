@@ -16,7 +16,7 @@ def load_transactions(filepath):
             data = json.load(file)
         return data.get('transactions', [])
     except (FileNotFoundError, json.JSONDecodeError) as e:
-        print(f"Error loading transactions: {e}")
+        print(f"Error loading transactions from {filepath}: {e}")
         return []
 
 

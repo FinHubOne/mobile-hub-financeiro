@@ -1,6 +1,6 @@
 # Mobile Hub Financeiro 🏦
 
-A simple financial hub MVP for the Hackathon project. This application helps track and categorize financial transactions.
+A modern financial hub MVP built with Python and Flet for the Hackathon project. This interactive application provides an intuitive interface to manage and track financial transactions with smart personalized recommendations.
 
 ## Project Structure
 
@@ -9,11 +9,29 @@ mobile-hub-financeiro/
 ├── data/
 │   └── extrato.json          # Mock transaction data
 ├── src/
-│   └── main.py               # Main application logic
+│   ├── app.py                # Flet GUI application (MVP)
+│   └── main.py               # CLI application (legacy)
+├── requirements.txt          # Python dependencies
 └── README.md                 # This file
 ```
 
 ## Features
+
+### MVP Features (Flet GUI Application)
+
+- **💰 Balance Display**: Real-time total balance calculation with visual color coding
+- **⚡ Quick Actions**: Instant access to common operations:
+  - 💸 **Pix**: Quick PIX transfers
+  - 📱 **Recarga**: Mobile top-up
+  - 🛡️ **Seguros**: Insurance services
+- **📊 Intelligent Transaction List**: 
+  - Color-coded transactions (🔴 red for expenses, 🟢 green for income)
+  - Detailed view with category, date, and amount
+  - Icon indicators for transaction direction
+- **🎯 Personalized Offers**: Smart recommendations based on spending patterns
+  - Auto insurance offer when transport expenses exceed R$ 100
+
+### CLI Features (Legacy)
 
 - **Transaction Management**: Load and display financial transactions from JSON data
 - **Balance Calculation**: Automatically calculate total balance from all transactions
@@ -23,33 +41,61 @@ mobile-hub-financeiro/
 ## Requirements
 
 - Python 3.7 or higher
-- No external dependencies required (uses only Python standard library)
+- Flet 0.21.0 or higher (for GUI application)
 
-## How to Run
+## Installation
 
 1. **Navigate to the project directory:**
    ```bash
    cd mobile-hub-financeiro
    ```
 
-2. **Run the main script:**
+2. **Install dependencies:**
    ```bash
-   python3 src/main.py
+   pip install -r requirements.txt
    ```
 
-   Or make it executable and run directly:
-   ```bash
-   chmod +x src/main.py
-   ./src/main.py
-   ```
+## How to Run
 
-## Sample Output
+### MVP - Flet GUI Application (Recommended)
 
-The application will:
-1. Load transactions from `data/extrato.json`
-2. Display all transactions with details (ID, date, type, category, amount, description)
-3. Calculate and show the total balance
-4. Provide a summary of expenses/income by category
+Run the interactive Flet application:
+
+```bash
+flet run src/app.py
+```
+
+Or alternatively:
+
+```bash
+python3 src/app.py
+```
+
+This will launch the modern GUI interface with all MVP features.
+
+### CLI Application (Legacy)
+
+Run the command-line interface:
+
+```bash
+python3 src/main.py
+```
+
+## Testing
+
+Run the comprehensive test suite to verify all functionality:
+
+```bash
+python3 test_app.py
+```
+
+This will validate:
+- Transaction loading
+- Balance calculation
+- Category totals
+- Personalization logic
+- Color coding
+- Quick action buttons
 
 ## Data Format
 

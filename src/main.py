@@ -6,10 +6,10 @@ Lê dados de transações financeiras e exibe o extrato inteligente
 
 import json
 import os
-from typing import List, Dict
+from typing import List, Dict, Any
 
 
-def carregar_extrato(caminho_arquivo: str) -> List[Dict]:
+def carregar_extrato(caminho_arquivo: str) -> List[Dict[str, Any]]:
     """
     Carrega os dados do extrato a partir de um arquivo JSON
     
@@ -30,7 +30,7 @@ def carregar_extrato(caminho_arquivo: str) -> List[Dict]:
         return []
 
 
-def calcular_saldo(transacoes: List[Dict]) -> Dict[str, float]:
+def calcular_saldo(transacoes: List[Dict[str, Any]]) -> Dict[str, float]:
     """
     Calcula o saldo total e os totais de entradas e saídas
     
@@ -74,7 +74,7 @@ def formatar_valor(valor: float) -> str:
     return f"R$ {valor:,.2f}".replace(',', '_').replace('.', ',').replace('_', '.')
 
 
-def exibir_extrato(transacoes: List[Dict]):
+def exibir_extrato(transacoes: List[Dict[str, Any]]) -> None:
     """
     Exibe o extrato formatado no console
     
@@ -128,7 +128,7 @@ def exibir_extrato(transacoes: List[Dict]):
     print()
 
 
-def main():
+def main() -> None:
     """
     Função principal do script
     """

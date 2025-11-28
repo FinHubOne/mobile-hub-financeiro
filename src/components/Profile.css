@@ -1,0 +1,182 @@
+/* A classe raiz da página, seguindo o padrão do app. */
+.profile-view {
+  padding: 1.5rem;
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+/* O card de conteúdo. Centralizado com margem automática. */
+.profile-card {
+  background-color: var(--background-secondary);
+  border-radius: 1.5rem;
+  padding: 2rem;
+  width: 100%;
+  max-width: 450px;
+  margin: 0 auto; /* Centraliza o card na horizontal */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* -- O restante do CSS permanece o mesmo -- */
+
+.profile-picture-section {
+  margin-bottom: 2rem;
+}
+
+.profile-picture-wrapper {
+  position: relative;
+  width: 90px;
+}
+
+.initials-avatar {
+  width: 90px;
+  height: 120px; /* Proporção 3x4 */
+  background-color: var(--blue-primary);
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2.5rem;
+  font-weight: 600;
+  border-radius: 1rem;
+  object-fit: cover;
+}
+
+.profile-picture {
+  width: 90px;
+  height: 120px;
+  object-fit: cover;
+  border-radius: 1rem;
+  border: 3px solid var(--blue-secondary);
+}
+
+.profile-pic-edit-button {
+  position: absolute;
+  bottom: -8px;
+  right: -8px;
+  background-color: var(--blue-primary-Lighter);
+  color: var(--blue-primary);
+  border-radius: 50%;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  border: 2px solid var(--background-secondary);
+}
+
+.profile-pic-edit-button:hover {
+  background-color: var(--blue-primary);
+  color: white;
+}
+
+.profile-info {
+  width: 100%;
+  display: grid;
+  gap: 1.2rem;
+}
+
+.profile-field label {
+  color: var(--text-secondary);
+  font-size: 0.85rem;
+  margin-bottom: 0.4rem;
+}
+
+.profile-field input {
+  font-size: 1rem;
+  padding: 0.8rem 1rem;
+  border: 1px solid var(--border-color);
+  border-radius: 0.5rem;
+  background-color: var(--background-primary);
+  color: var(--text-primary);
+  width: 100%;
+}
+
+.profile-field input.read-only {
+  background-color: transparent;
+  border-color: transparent;
+  color: var(--text-secondary);
+  pointer-events: none;
+  padding-left: 0;
+}
+
+.profile-actions {
+  width: 100%;
+  margin-top: 2rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+}
+
+.profile-edit-button,
+.profile-save-button,
+.profile-action-button {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  width: 100%;
+  justify-content: center;
+  padding: 0.9rem;
+  font-size: 1rem;
+  font-weight: 600;
+  border: none;
+  border-radius: 0.75rem;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.profile-edit-button {
+  background-color: var(--blue-primary-Lighter);
+  color: var(--blue-primary);
+}
+.profile-save-button {
+  background-color: var(--blue-primary);
+  color: white;
+}
+.profile-action-button {
+  background-color: var(--background-tertiary);
+  color: var(--text-primary);
+}
+
+.profile-footer {
+  margin-top: 2rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+}
+
+.chat-bubble-button {
+  position: fixed;
+  bottom: 80px;
+  right: 20px;
+  background-color: var(--blue-primary);
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 60px;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  transition: transform 0.2s ease-in-out;
+}
+
+.chat-bubble-button:hover {
+  transform: scale(1.1);
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}

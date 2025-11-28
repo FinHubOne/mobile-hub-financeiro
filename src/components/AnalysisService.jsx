@@ -1,18 +1,18 @@
-
 import React from 'react';
 import ExpenseChart from './ExpenseChart.jsx';
 import { Lightbulb, TrendingUp, DollarSign } from 'lucide-react';
+import './Analysis.css';
 
 // --- HELPER COMPONENTS ---
 
 const RecommendationCard = ({ icon, title, text }) => (
-  <div className="bg-gray-50 dark:bg-zinc-800 p-4 rounded-lg flex items-start gap-4">
-    <div className="bg-yellow-400/20 text-yellow-500 dark:bg-yellow-500/30 dark:text-yellow-400 p-2 rounded-full">
+  <div className="recommendation-card">
+    <div className="recommendation-icon">
       {icon}
     </div>
     <div>
-      <h4 className="font-semibold text-gray-800 dark:text-gray-200">{title}</h4>
-      <p className="text-sm text-gray-600 dark:text-gray-400">{text}</p>
+      <h4>{title}</h4>
+      <p>{text}</p>
     </div>
   </div>
 );
@@ -64,15 +64,15 @@ const AnalysisService = ({ transactions }) => {
   const recommendations = generateRecommendations();
 
   return (
-    <div className="space-y-8 animate-fade-in-up">
+    <div className="analysis-container">
       <div>
-        <h3 className="text-xl font-bold mb-4">Análise de Despesas</h3>
+        <h3>Análise de Despesas</h3>
         <ExpenseChart transactions={transactions} />
       </div>
 
       <div>
-        <h3 className="text-xl font-bold mb-4">Recomendações para Você</h3>
-        <div className="space-y-4">
+        <h3>Recomendações para Você</h3>
+        <div className="recommendations-list">
           {recommendations.map((rec, index) => (
             <RecommendationCard key={index} icon={rec.icon} title={rec.title} text={rec.text} />
           ))}

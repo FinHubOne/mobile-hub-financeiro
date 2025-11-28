@@ -1,54 +1,80 @@
-import React, { useRef, useState } from 'react';
 
-const Draggable = ({ children }) => {
+import React, { useRef, useState, useEffect } from 'react';
+
+const Draggable = ({ children, onPull }) => {
   const containerRef = useRef(null);
-  const [isDown, setIsDown] = useState(false);
-  const [startX, setStartX] = useState(0);
-  const [scrollLeft, setScrollLeft] = useState(0);
+  const [isDragging, setIsDragging] = useState(false);
+  const [startY, setStartY] = useState(0);
+  const [initialScrollTop, setInitialScrollTop] = useState(0);
+  const [resistance, setResistance] = useState(0);
 
-  const handleMouseDown = (e) => {
-    const container = containerRef.current;
-    if (!container) return;
+  const PULL_THRESHOLD = 70; // How far the user needs to pull down
+  const RESISTANCE_FACTOR = 0.6; // How much resistance to apply
 
-    setIsDown(true);
-    container.classList.add('cursor-grabbing');
-    setStartX(e.pageX - container.offsetLeft);
-    setScrollLeft(container.scrollLeft);
-  };
+  useEffect(() => {
+    const node = containerRef.current;
+    if (!node) return;
 
-  const handleMouseLeave = () => {
-    const container = containerRef.current;
-    if (!container) return;
+    const handleTouchStart = (e) => {
+      if (node.scrollTop === 0) {
+        setStartY(e.touches[0].pageY);
+        setIsDragging(true);
+        setInitialScrollTop(node.scrollTop);
+      }
+    };
 
-    setIsDown(false);
-    container.classList.remove('cursor-grabbing');
-  };
+    const handleTouchMove = (e) => {
+      if (!isDragging) return;
 
-  const handleMouseUp = () => {
-    const container = containerRef.current;
-    if (!container) return;
+      const currentY = e.touches[0].pageY;
+      let diff = currentY - startY;
 
-    setIsDown(false);
-    container.classList.remove('cursor-grabbing');
-  };
+      if (diff > 0 && node.scrollTop === 0) {
+        e.preventDefault(); // Prevent page scroll
+        const newResistance = diff * RESISTANCE_FACTOR;
+        setResistance(newResistance);
 
-  const handleMouseMove = (e) => {
-    if (!isDown || !containerRef.current) return;
-    e.preventDefault();
-    const x = e.pageX - containerRef.current.offsetLeft;
-    const walk = (x - startX) * 2; // O multiplicador * 2 acelera o scroll
-    containerRef.current.scrollLeft = scrollLeft - walk;
+        // If threshold is met, trigger the action and reset
+        if (newResistance > PULL_THRESHOLD) {
+          onPull();
+          resetState();
+        }
+      }
+    };
+
+    const handleTouchEnd = () => {
+      if (isDragging) {
+        resetState();
+      }
+    };
+
+    const resetState = () => {
+      setIsDragging(false);
+      setStartY(0);
+      setResistance(0);
+    };
+
+    // Attach event listeners
+    node.addEventListener('touchstart', handleTouchStart, { passive: false });
+    node.addEventListener('touchmove', handleTouchMove, { passive: false });
+    node.addEventListener('touchend', handleTouchEnd);
+
+    // Cleanup
+    return () => {
+      node.removeEventListener('touchstart', handleTouchStart);
+      node.removeEventListener('touchmove', handleTouchMove);
+      node.removeEventListener('touchend', handleTouchEnd);
+    };
+
+  }, [isDragging, startY, onPull]);
+
+  const style = {
+    transform: `translateY(${resistance}px)`,
+    transition: isDragging ? 'none' : 'transform 0.3s ease-out',
   };
 
   return (
-    <div
-      ref={containerRef}
-      className="flex overflow-x-auto space-x-4 cursor-grab select-none scrollbar-hide"
-      onMouseDown={handleMouseDown}
-      onMouseLeave={handleMouseLeave}
-      onMouseUp={handleMouseUp}
-      onMouseMove={handleMouseMove}
-    >
+    <div ref={containerRef} style={style} className="draggable-container">
       {children}
     </div>
   );

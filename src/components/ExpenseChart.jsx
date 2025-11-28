@@ -1,10 +1,10 @@
+
 import React from 'react';
 import { BarChart, Bar, XAxis, YAxis, Tooltip, Legend, ResponsiveContainer, CartesianGrid } from 'recharts';
 
 const ExpenseChart = ({ transactions }) => {
-  // `processedTransactions` has been removed. We now use the category from the transaction itself.
   const expenseData = transactions
-    .filter(t => t.type === 'out' && t.category) // We only chart processed outgoing transactions
+    .filter(t => t.type === 'out' && t.category)
     .reduce((acc, t) => {
       const category = t.category || 'Outros';
       const amount = Math.abs(t.amount);
@@ -19,15 +19,15 @@ const ExpenseChart = ({ transactions }) => {
   const chartData = Object.values(expenseData).sort((a, b) => b.value - a.value);
 
   if (chartData.length === 0) {
-    return null; 
+    return <p className="empty-chart-text">Não há dados de despesas para exibir o gráfico.</p>; 
   }
   
   const CustomTooltip = ({ active, payload, label }) => {
       if (active && payload && payload.length) {
           return (
-          <div className="p-3 bg-slate-900 text-white rounded-lg shadow-lg">
-              <p className="font-bold">{label}</p>
-              <p className="text-sm">{`Total: R$ ${payload[0].value.toFixed(2).replace('.', ',')}`}</p>
+          <div className="chart-tooltip">
+              <p className="tooltip-label">{label}</p>
+              <p className="tooltip-value">{`Total: R$ ${payload[0].value.toFixed(2).replace('.', ',')}`}</p>
           </div>
           );
       }
@@ -36,34 +36,31 @@ const ExpenseChart = ({ transactions }) => {
 
 
   return (
-    <div className="my-8">
-        <h3 className="text-xl font-bold mb-4">Análise de Despesas</h3>
-        <div style={{ width: '100%', height: 300 }}>
-            <ResponsiveContainer>
-                <BarChart data={chartData} margin={{ top: 5, right: 20, left: -10, bottom: 5 }}>
-                    <CartesianGrid strokeDasharray="3 3" stroke="#e0e0e020" />
-                    <XAxis 
-                        dataKey="name" 
-                        stroke="#888888"
-                        fontSize={12} 
-                        tickLine={false}
-                        axisLine={false}
-                    />
-                    <YAxis 
-                        stroke="#888888"
-                        fontSize={12}
-                        tickLine={false}
-                        axisLine={false}
-                        tickFormatter={(value) => `R$${value}`}
-                    />
-                    <Tooltip 
-                        cursor={{ fill: 'rgba(136, 132, 216, 0.1)' }}
-                        content={<CustomTooltip />}
-                    />
-                    <Bar dataKey="value" name="Total Gasto" fill="#8884d8" barSize={30} radius={[10, 10, 0, 0]} />
-                </BarChart>
-            </ResponsiveContainer>
-        </div>
+    <div className="chart-wrapper">
+        <ResponsiveContainer width="100%" height={300}>
+            <BarChart data={chartData} margin={{ top: 5, right: 20, left: -10, bottom: 5 }}>
+                <CartesianGrid strokeDasharray="3 3" stroke="var(--border, #e0e0e020)" />
+                <XAxis 
+                    dataKey="name" 
+                    stroke="var(--text-secondary, #888888)"
+                    fontSize={12} 
+                    tickLine={false}
+                    axisLine={false}
+                />
+                <YAxis 
+                    stroke="var(--text-secondary, #888888)"
+                    fontSize={12}
+                    tickLine={false}
+                    axisLine={false}
+                    tickFormatter={(value) => `R$${value}`}
+                />
+                <Tooltip 
+                    cursor={{ fill: 'rgba(136, 132, 216, 0.1)' }}
+                    content={<CustomTooltip />}
+                />
+                <Bar dataKey="value" name="Total Gasto" fill="var(--icon-active, #8884d8)" barSize={30} radius={[10, 10, 0, 0]} />
+            </BarChart>
+        </ResponsiveContainer>
     </div>
   );
 };

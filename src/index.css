@@ -1,26 +1,89 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+/* index.css */
 
-@layer base {
-  body {
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-  }
+/* CARD MODERN STYLES */
+.card-item {
+    border: 5px solid red; /* Borda de teste */
+    border-radius: 1.25rem; /* 20px */
+    padding: 1.5rem; /* 24px */
+    color: white;
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
-/* Custom animation */
-@keyframes fade-in-up {
-  from {
-    opacity: 0;
-    transform: translateY(10px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+.card-item:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 25px rgba(0,0,0,0.25);
 }
 
-.animate-fade-in-up {
-  animation: fade-in-up 0.5s ease-out forwards;
+/* GRADIENTES PARA CADA BANDEIRA */
+.card-brand-visa {
+    background: linear-gradient(135deg, #1a237e 0%, #283593 100%); /* Gradiente azul escuro */
+}
+
+.card-brand-mastercard {
+    background: linear-gradient(135deg, #212121 0%, #424242 100%); /* Gradiente cinza escuro */
+}
+
+.card-item-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+}
+
+.card-brand-name {
+    font-size: 1.25rem;
+    font-weight: 600;
+    opacity: 0.8;
+}
+
+.card-brand-logo {
+    height: 40px; /* Tamanho do logo */
+    width: auto;
+}
+
+.card-item-body {
+    text-align: center;
+}
+
+.card-number {
+    font-family: 'monospace'; /* Fonte monoespaçada para números de cartão */
+    font-size: 1.75rem; /* 28px */
+    letter-spacing: 2px;
+    text-shadow: 0 2px 4px rgba(0,0,0,0.25);
+}
+
+.card-item-footer {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.875rem; /* 14px */
+    opacity: 0.9;
+}
+
+.card-holder-name, .card-expiry-date {
+    font-weight: 500;
+}
+
+.card-remove-button {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: rgba(255,255,255,0.1);
+    border: none;
+    border-radius: 50%;
+    color: white;
+    cursor: pointer;
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.card-remove-button:hover {
+    background: rgba(255,255,255,0.2);
 }

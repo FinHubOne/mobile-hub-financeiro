@@ -1,0 +1,32 @@
+.recommendation-card {
+    background-color: var(--background-secondary);
+    border-radius: 1.5rem;
+    padding: 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    margin-bottom: 1rem;
+}
+
+.recommendation-icon {
+    background-color: var(--blue-primary-Lighter);
+    color: var(--blue-primary);
+    border-radius: 50%;
+    width: 48px;
+    height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.recommendation-card h4 {
+    margin: 0 0 0.25rem 0;
+    font-weight: 600;
+}
+
+.recommendation-card p {
+    margin: 0;
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+}

@@ -1,8 +1,0 @@
-# requirements.txt
-# Lista de dependências para as Cloud Functions em Python
-
-# SDK do Firebase para Cloud Functions
-firebase-functions
-
-# SDK do Firebase Admin para interagir com serviços do Firebase
-firebase-admin

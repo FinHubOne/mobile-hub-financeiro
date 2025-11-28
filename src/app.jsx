@@ -1,8 +1,9 @@
+
 import React, { useState, useEffect } from 'react';
-import { Wallet, PieChart, Shield, Zap, Target, Home, User, Bell, Database, FileText, Smartphone } from 'lucide-react';
+import { Wallet, PieChart, Shield, Zap, Target, Home, User, Bell, Database, FileText, Smartphone, Activity } from 'lucide-react';
 import { initializeApp } from 'firebase/app';
 import { getAuth, signInAnonymously, onAuthStateChanged } from 'firebase/auth';
-import { getFirestore, collection, doc, onSnapshot, query, writeBatch } from 'firebase/firestore';
+import { getFirestore, collection, doc, onSnapshot, query, writeBatch, updateDoc } from 'firebase/firestore';
 import { getFunctions, httpsCallable } from 'firebase/functions';
 
 // Import Service Components
@@ -11,9 +12,9 @@ import CashbackService from './components/CashbackService.jsx';
 import InsuranceService from './components/InsuranceService.jsx';
 import BoletoService from './components/BoletoService.jsx';
 import RecargaService from './components/RecargaService.jsx';
+import AnalysisService from './components/AnalysisService.jsx';
 import ThemeSwitcher from './components/ThemeSwitcher.jsx';
 import { TransactionItem, getCategoryDetails } from './components/TransactionItem.jsx';
-import ExpenseChart from './components/ExpenseChart.jsx';
 import Draggable from './components/Draggable.jsx';
 
 // --- FIREBASE CONFIGURATION ---
@@ -50,7 +51,7 @@ const INITIAL_TRANSACTIONS = [
 const ServiceCard = ({ title, icon, color, onClick, active }) => (
   <button 
     onClick={onClick}
-    className={`flex flex-col items-center justify-center p-3 rounded-2xl border transition-all duration-300 w-28 h-28 flex-shrink-0
+    className={`flex flex-col items-center justify-center p-3 rounded-2xl border transition-all duration-300 w-32 h-32 flex-shrink-0
     ${active ? `bg-${color}-500 text-white shadow-lg shadow-${color}-500/30 border-${color}-600` 
             : 'bg-white dark:bg-zinc-800 border-gray-200 dark:border-zinc-700 hover:bg-gray-50 dark:hover:bg-zinc-700'}`}
   >
@@ -59,8 +60,12 @@ const ServiceCard = ({ title, icon, color, onClick, active }) => (
   </button>
 );
 
+// *** CORREÇÃO DEFINITIVA FINAL ***
 const NavItem = ({ icon, label, active, onClick }) => (
-  <button onClick={onClick} className={`flex flex-col items-center justify-center transition-colors duration-200 ${active ? 'text-blue-500' : 'text-gray-400 hover:text-blue-500'}`}>
+  <button
+    onClick={onClick}
+    // A classe `active` é aplicada condicionalmente para o CSS funcionar
+    className={`nav-item-btn flex flex-col items-center justify-center ${active ? 'active' : ''}`}>
     {icon}
     <span className="text-xs font-medium mt-1">{label}</span>
   </button>
@@ -70,9 +75,9 @@ const NavItem = ({ icon, label, active, onClick }) => (
 
 export default function App() {
   const [user, setUser] = useState(null);
-  const [activeService, setActiveService] = useState('home');
+  const [activeService, setActiveService] = useState(null);
+  const [activeView, setActiveView] = useState('home');
   const [transactions, setTransactions] = useState([]);
-  const [processedTransactions, setProcessedTransactions] = useState({});
   const [balance, setBalance] = useState(0);
   const [loading, setLoading] = useState(true);
   const [authError, setAuthError] = useState(null);
@@ -114,6 +119,23 @@ export default function App() {
     const txQuery = query(collection(db, 'artifacts', APP_ID, 'users', user.uid, 'transactions'));
     const unsubscribeTx = onSnapshot(txQuery, (snapshot) => {
       let txs = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+      
+      txs.forEach(async (tx) => {
+        if (!tx.category && !tx.clean_description) {
+          try {
+            const result = await callProcessTransaction({ raw_description: tx.raw_description });
+            const processedData = result.data;
+            const txDocRef = doc(db, 'artifacts', APP_ID, 'users', user.uid, 'transactions', tx.id);
+            await updateDoc(txDocRef, {
+              category: processedData.category,
+              clean_description: processedData.clean_description
+            });
+          } catch (error) {
+            console.error(`Error processing transaction ${tx.id}:`, error);
+          }
+        }
+      });
+      
       txs.sort((a, b) => new Date(b.date) - new Date(a.date));
       setTransactions(txs);
       
@@ -127,27 +149,6 @@ export default function App() {
 
     return () => unsubscribeTx();
   }, [user]);
-
-  useEffect(() => {
-    if (transactions.length === 0) return;
-
-    const processAll = async () => {
-      const newProcessed = {...processedTransactions};
-      for (const t of transactions) {
-        if (newProcessed[t.id]) continue;
-        try {
-          const result = await callProcessTransaction({ raw_description: t.raw_description });
-          newProcessed[t.id] = result.data;
-        } catch (error) {
-          console.error("Error calling Cloud Function:", error);
-          newProcessed[t.id] = { category: 'Outros', cleanDescription: t.raw_description.substring(0, 25) };
-        }
-      }
-      setProcessedTransactions(newProcessed);
-    };
-
-    processAll();
-  }, [transactions]);
   
   const seedDatabase = async () => {
     if (!user) return;
@@ -155,7 +156,8 @@ export default function App() {
     const batch = writeBatch(db);
     INITIAL_TRANSACTIONS.forEach((tx) => {
       const docRef = doc(collection(db, 'artifacts', APP_ID, 'users', user.uid, 'transactions'));
-      batch.set(docRef, { ...tx, amount: Number(tx.amount) });
+      const { id, ...rest } = tx;
+      batch.set(docRef, { ...rest, amount: Number(tx.amount) });
     });
     try {
       await batch.commit();
@@ -165,21 +167,89 @@ export default function App() {
     setLoading(false);
   };
 
-  const renderActiveService = () => {
-    if (activeService === 'home') return null;
-    
-    const services = {
-      pix: <PixService />,
-      cashback: <CashbackService savings={120.50} />,
-      insurance: <InsuranceService transactions={transactions} processedTransactions={processedTransactions} />,
-      boletos: <BoletoService />,
-      recargas: <RecargaService />,
-    };
+  const handleServiceClick = (service) => {
+    if (activeView !== 'home') {
+        setActiveView('home');
+        setTimeout(() => setActiveService(service), 100);
+    } else {
+        setActiveService(current => (current === service ? null : service));
+    }
+  }
 
+  const renderMainContent = () => {
+    if (activeView === 'analysis') {
+      return (
+          <div className="px-6 mt-8">
+              <AnalysisService transactions={transactions} />
+          </div>
+      );
+    }
+    
     return (
-      <div className="mt-6 mb-2 animate-fade-in-up">
-        {services[activeService]}
-      </div>
+      <>
+        <div className="px-6">
+            <div className="mt-10 mb-6">
+              <p className="text-base font-semibold text-gray-500 dark:text-zinc-400 mb-1">Saldo em conta</p>
+              <h2 className="text-4xl font-extrabold tracking-tighter">
+                {loading ? "..." : `R$ ${balance.toFixed(2).replace('.', ',')}`}
+              </h2>
+            </div>
+        </div>
+
+        <div className="mb-8 pl-6">
+            <Draggable>
+              <ServiceCard title="Área Pix" icon={<Zap size={32} />} color="yellow" active={activeService === 'pix'} onClick={() => handleServiceClick('pix')} />
+              <ServiceCard title="Cashback" icon={<Target size={32} />} color="purple" active={activeService === 'cashback'} onClick={() => handleServiceClick('cashback')} />
+              <ServiceCard title="Seguros" icon={<Shield size={32} />} color="blue" active={activeService === 'insurance'} onClick={() => handleServiceClick('insurance')} />
+              <ServiceCard title="Pagar Boleto" icon={<FileText size={32} />} color="green" active={activeService === 'boletos'} onClick={() => handleServiceClick('boletos')} />
+              <ServiceCard title="Recarga" icon={<Smartphone size={32} />} color="red" active={activeService === 'recargas'} onClick={() => handleServiceClick('recargas')} />
+            </Draggable>
+        </div>
+        
+        <div className="px-6">
+          {activeService && (
+              <div className="mt-6 mb-2 animate-fade-in-up">
+                  {{
+                      pix: <PixService />,
+                      cashback: <CashbackService savings={120.50} />,
+                      insurance: <InsuranceService transactions={transactions} />,
+                      boletos: <BoletoService />,
+                      recargas: <RecargaService />,
+                  }[activeService]}
+              </div>
+          )}
+          
+          <div className="mt-12 mb-8">
+            <div className="flex justify-between items-center mb-4">
+              <h3 className="text-xl font-bold">Atividade</h3>
+              {transactions.length === 0 && !loading && !authError && (
+                <button onClick={seedDatabase} className="text-xs bg-blue-500 text-white px-3 py-1 rounded-full font-medium flex items-center gap-1 hover:bg-blue-600 transition-colors">
+                  <Database size={12} /> Carregar Dados
+                </button>
+              )}
+            </div>
+
+            <div className="space-y-2">
+              {authError && <p className="text-red-500">{authError}</p>}
+              {loading && <p className="text-center text-gray-400 py-8">Carregando transações...</p>}
+              {!loading && transactions.length === 0 && (
+                <div className="text-center py-8 text-gray-400">
+                  <p>Nenhuma transação registrada.</p>
+                  <p className="text-xs mt-1">Clique para carregar dados de exemplo.</p>
+                </div>
+              )}
+              {transactions.slice(0, activeService ? transactions.length : 5).map((t, index) => (
+                <TransactionItem 
+                  key={t.id}
+                  transaction={t} 
+                  categoryDetails={getCategoryDetails(t.category, t.type)}
+                  style={{ animationDelay: `${index * 50}ms` }}
+                />
+              ))}
+            </div>
+          </div>
+        </div>
+      </>
     );
   }
 
@@ -187,12 +257,41 @@ export default function App() {
     <>
     <style>
         {`
-        .scrollbar-hide::-webkit-scrollbar {
-            display: none;
+        .scrollbar-hide::-webkit-scrollbar { display: none; }
+        .scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
+
+        /* --- ESTILOS GARANTIDOS PARA A BARRA DE NAVEGAÇÃO --- */
+
+        .nav-item-btn {
+          /* Reset de estilos para remover conflitos */
+          background: none;
+          border: none;
+          padding: 0;
+          font: inherit;
+          cursor: pointer;
+          outline: inherit;
+          width: 4.5rem; /* Aumenta a área de toque */
+          height: 4rem;
+          color: #9ca3af; /* Cor cinza-400 */
+          /* Animação suave para cor e escala */
+          transition: color 0.2s ease-in-out, transform 0.2s ease-in-out;
         }
-        .scrollbar-hide {
-            -ms-overflow-style: none; 
-            scrollbar-width: none; 
+
+        /* Efeito de HOVER (mouse em cima) para itens NÃO ATIVOS */
+        .nav-item-btn:not(.active):hover {
+          color: #3b82f6; /* Cor azul-500 */
+        }
+
+        /* Estilo para o item que está ATIVO (selecionado) */
+        .nav-item-btn.active {
+          transform: scale(1.1);
+          color: #3b82f6; /* Cor azul-500 */
+        }
+
+        /* Efeito de CLIQUE (pressionado) para QUALQUER item */
+        .nav-item-btn:active {
+          transform: scale(0.95);
+          transition-duration: 0.1s;
         }
         `}
     </style>
@@ -201,15 +300,14 @@ export default function App() {
         
         <div className="absolute top-0 left-0 right-0 h-32 bg-blue-600 dark:bg-blue-800 rounded-b-2xl" />
 
-        {/* --- Header --- */}
         <header className="p-6 pt-10 pb-4 z-10">
           <div className="flex justify-between items-center">
             <div className="flex items-center gap-3">
-              <div className="h-12 w-12 bg-blue-200 dark:bg-blue-500 rounded-full flex items-center justify-center text-blue-700 dark:text-white font-bold text-lg">JS</div>
-              <div>
-                <p className="text-sm text-blue-100 dark:text-blue-200">Bem-vindo,</p>
-                <h1 className="text-xl font-bold text-white">João Silva</h1>
-              </div>
+                <div className="h-12 w-12 bg-blue-200 dark:bg-blue-500 rounded-full flex items-center justify-center text-blue-700 dark:text-white font-bold text-lg">JS</div>
+                <div>
+                  <p className="text-sm text-blue-100 dark:text-blue-200">Bem-vindo,</p>
+                  <h1 className="text-xl font-bold text-white">João Silva</h1>
+                </div>
             </div>
             <div className="flex items-center gap-4">
               <ThemeSwitcher theme={theme} toggleTheme={toggleTheme} />
@@ -221,77 +319,15 @@ export default function App() {
           </div>
         </header>
 
-        {/* --- Main Content --- */}
         <main className="flex-grow pb-28 overflow-y-auto overflow-x-hidden z-10">
-          <div className="px-6">
-            {/* --- Balance --- */}
-            <div className="mt-10 mb-6">
-              <p className="text-base font-semibold text-gray-500 dark:text-zinc-400 mb-1">Saldo em conta</p>
-              <h2 className="text-4xl font-extrabold tracking-tighter">
-                {loading ? "..." : `R$ ${balance.toFixed(2).replace('.', ',')}`}
-              </h2>
-            </div>
-          </div>
-
-          {/* --- Service Icons --- */}
-          <div className="mb-8 pl-6">
-             <Draggable>
-                <ServiceCard title="Área Pix" icon={<Zap size={32} />} color="yellow" active={activeService === 'pix'} onClick={() => setActiveService(activeService === 'pix' ? 'home' : 'pix')} />
-                <ServiceCard title="Cashback" icon={<Target size={32} />} color="purple" active={activeService === 'cashback'} onClick={() => setActiveService(activeService === 'cashback' ? 'home' : 'cashback')} />
-                <ServiceCard title="Seguros" icon={<Shield size={32} />} color="blue" active={activeService === 'insurance'} onClick={() => setActiveService(activeService === 'insurance' ? 'home' : 'insurance')} />
-                <ServiceCard title="Pagar Boleto" icon={<FileText size={32} />} color="green" active={activeService === 'boletos'} onClick={() => setActiveService(activeService === 'boletos' ? 'home' : 'boletos')} />
-                <ServiceCard title="Recarga" icon={<Smartphone size={32} />} color="red" active={activeService === 'recargas'} onClick={() => setActiveService(activeService === 'recargas' ? 'home' : 'recargas')} />
-                {/* Adicione mais cards aqui se precisar */}
-             </Draggable>
-          </div>
-          
-          <div className="px-6">
-            {/* --- Active Service Component --- */}
-            {renderActiveService()}
-
-            {/* --- Activity Feed --- */}
-            <div className="mb-8">
-              <div className="flex justify-between items-center mb-4">
-                <h3 className="text-lg font-bold">Atividade</h3>
-                {transactions.length === 0 && !loading && !authError && (
-                  <button onClick={seedDatabase} className="text-xs bg-blue-500 text-white px-3 py-1 rounded-full font-medium flex items-center gap-1 hover:bg-blue-600 transition-colors">
-                    <Database size={12} /> Carregar Dados
-                  </button>
-                )}
-              </div>
-
-              <div className="space-y-2">
-                {authError && <p className="text-red-500">{authError}</p>}
-                {loading && <p className="text-center text-gray-400 py-8">Carregando transações...</p>}
-                {!loading && transactions.length === 0 && (
-                  <div className="text-center py-8 text-gray-400">
-                    <p>Nenhuma transação registrada.</p>
-                    <p className="text-xs mt-1">Clique para carregar dados de exemplo.</p>
-                  </div>
-                )}
-                {transactions.slice(0, 5).map((t, index) => (
-                  <TransactionItem 
-                    key={t.id}
-                    transaction={t} 
-                    processed={processedTransactions[t.id]}
-                    categoryDetails={getCategoryDetails(processedTransactions[t.id]?.category, t.type)}
-                    style={{ animationDelay: `${index * 50}ms` }}
-                  />
-                ))}
-              </div>
-            </div>
-
-            {/* --- Expense Chart --- */}
-            <ExpenseChart transactions={transactions} processedTransactions={processedTransactions} />
-          </div>
+          {renderMainContent()}
         </main>
 
-        {/* --- Bottom Navigation --- */}
-        <nav className="fixed bottom-0 left-0 w-full bg-white/80 dark:bg-black/80 backdrop-blur-sm border-t border-gray-100 dark:border-zinc-800 p-4 flex justify-around items-start md:absolute md:max-w-md">
-          <NavItem icon={<Home size={26} />} label="Início" active={true} onClick={() => setActiveService('home')} />
-          <NavItem icon={<Wallet size={26} />} label="Carteira" />
-          <NavItem icon={<PieChart size={26} />} label="Análise" />
-          <NavItem icon={<User size={26} />} label="Perfil" />
+        <nav className="fixed bottom-0 left-0 w-full bg-white/80 dark:bg-black/80 backdrop-blur-sm border-t border-gray-100 dark:border-zinc-800 px-2 py-1 flex justify-around items-center md:absolute md:max-w-md">
+          <NavItem icon={<Home size={26} />} label="Início" active={activeView === 'home'} onClick={() => setActiveView('home')} />
+          <NavItem icon={<Wallet size={26} />} label="Carteira" active={activeView === 'wallet'} onClick={() => setActiveView('wallet')} />
+          <NavItem icon={<PieChart size={26} />} label="Análise" active={activeView === 'analysis'} onClick={() => setActiveView('analysis')} />
+          <NavItem icon={<User size={26} />} label="Perfil" active={activeView === 'profile'} onClick={() => setActiveView('profile')} />
         </nav>
       </div>
     </div>

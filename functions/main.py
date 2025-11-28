@@ -1,3 +1,4 @@
+
 # main.py
 # Importa as bibliotecas necessárias do Firebase
 from firebase_admin import initialize_app
@@ -17,7 +18,7 @@ CATEGORIZATION_RULES = {
     "Moradia": ["aluguel", "condominio", "enel", "sabesp", "internet", "iptu"],
     "Lazer": ["spotify", "netflix", "hbo", "disney+", "cinema", "show", "ingresso", "bar", "evento"],
     "Educação": ["udemy", "curso", "faculdade", "escola"],
-    "Pix": ["pix"], # Regra genérica para PIX, mas será tratada de forma especial abaixo.
+    "Pix": ["pix"], 
 }
 
 def get_clean_description(raw_description: str, keyword_found: str) -> str:
@@ -27,15 +28,13 @@ def get_clean_description(raw_description: str, keyword_found: str) -> str:
     """
     try:
         # Tenta encontrar o texto que vem *depois* da palavra-chave ou de um asterisco.
-        # Isso geralmente corresponde ao nome do estabelecimento.
         match = re.search(r'[\*\- ]\s*({}[a-zA-Z0-9 .]*)'.format(re.escape(keyword_found)), raw_description, re.IGNORECASE)
-        if match and match.group(1):
-            # Limpa espaços extras e capitaliza o nome de forma inteligente (Ex: "Ifood" em vez de "ifood")
+        if match and match.group(1) and len(match.group(1).strip()) > 3:
             return match.group(1).strip().title()
     except Exception:
-        # Se a regex falhar, retorna a keyword capitalizada como fallback.
         pass
         
+    # Fallback: Se a regex falhar ou não encontrar um nome válido, usa a própria keyword capitalizada.
     return keyword_found.capitalize()
 
 # --- A FUNÇÃO PRINCIPAL (PROCESSADORA) ---
@@ -45,57 +44,56 @@ def process_transaction_py(req: https_fn.CallableRequest) -> dict:
     Processa uma descrição de transação bruta para extrair categoria e descrição limpa.
     AGORA COM LÓGICA MELHORADA!
     """
-    raw_description = req.data.get("raw_description", "") # CORREÇÃO APLICADA AQUI
+    raw_description = req.data.get("raw_description", "")
     
     if not raw_description:
         raise https_fn.HttpsError(
             code=https_fn.FunctionsErrorCode.INVALID_ARGUMENT,
-            message="A função deve ser chamada com um argumento 'raw_description'." # MENSAGEM CORRIGIDA
+            message="A função deve ser chamada com um argumento 'raw_description'."
         )
 
     lower_description = raw_description.lower()
 
-    # --- LÓGICA ESPECIAL PARA PIX (INOVADOR) ---
+    # --- LÓGICA ESPECIAL PARA PIX ---
     if "pix" in lower_description:
-        # Tenta extrair o nome do destinatário/remetente do PIX
-        # Ex: "TRANSF PIX RECEBIDA - JOAO SILVA" -> "Joao Silva"
-        # Ex: "PAGAMENTO PIX - LOJA DE ROUPAS" -> "Loja de Roupas"
         match = re.search(r'pix[\s\-]*[a-zA-Z]*[\s\-]*([a-zA-Z\s.]+)', lower_description)
-        clean_desc = "Transação Pix" # Fallback
+        clean_desc = "Transação Pix"
         if match and match.group(1):
             name = match.group(1).strip()
-            # Remove palavras comuns para limpar o nome
             name = name.replace("recebida", "").replace("enviado", "").strip()
-            clean_desc = name.title()
+            if len(name) > 3:
+              clean_desc = name.title()
 
         return {
             "category": "Pix",
-            "cleanDescription": clean_desc,
+            "clean_description": clean_desc,
         }
 
-    # --- LÓGICA DE CATEGORIZAÇÃO POR REGRAS (EFICAZ) ---
+    # --- LÓGICA DE CATEGORIZAÇÃO POR REGRAS (MAIS ROBUSTA) ---
     for category, keywords in CATEGORIZATION_RULES.items():
         for keyword in keywords:
             if keyword in lower_description:
-                # Usa a função auxiliar para limpar a descrição
+                # A função auxiliar agora é mais simples e confiável.
                 clean_desc = get_clean_description(raw_description, keyword)
                 
                 return {
                     "category": category,
-                    "cleanDescription": clean_desc,
+                    "clean_description": clean_desc,
                 }
     
     # --- FALLBACK INTELIGENTE PARA "OUTROS" ---
-    # Se nenhuma regra corresponder, tenta extrair a parte mais relevante.
-    # Ex: "COMPRA CARTAO - PADARIA ESTRELA" -> "Padaria Estrela"
-    parts = raw_description.split('*')
-    if len(parts) > 1:
-        clean_description = parts[-1].strip().title()
+    # Se nenhuma regra corresponder, tenta extrair a parte mais relevante do final.
+    parts = re.split(r'[\*\- ]', raw_description)
+    # Pega a última parte da string que tenha pelo menos 4 caracteres.
+    relevant_part = next((part.strip().title() for part in reversed(parts) if len(part.strip()) >= 4), None)
+    
+    if relevant_part:
+        clean_description = relevant_part
     else:
-        # Se não houver '*', pega a string inteira e capitaliza
+        # Se não encontrar nada, usa a string inteira capitalizada.
         clean_description = raw_description.strip().title()
         
     return {
         "category": "Outros",
-        "cleanDescription": clean_description,
+        "clean_description": clean_description,
     }

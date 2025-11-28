@@ -23,10 +23,13 @@ const DynamicIcon = ({ name, ...props }) => {
   return IconComponent ? <IconComponent {...props} /> : null;
 };
 
-export const TransactionItem = ({ transaction, processed, categoryDetails, style }) => {
-  const details = categoryDetails || { icon: CircleDollarSign, color: 'gray', friendlyName: 'Processando...' };
-  const cleanDescription = processed?.cleanDescription || 'Processando...';
-  const category = processed?.category || '...';
+export const TransactionItem = ({ transaction, categoryDetails, style }) => {
+  // The `processed` prop has been removed.
+  // `categoryDetails` is reliably passed from `app.jsx` based on `transaction.category`.
+  const details = categoryDetails || getCategoryDetails(transaction.category, transaction.type);
+  
+  // Use the `clean_description` from the transaction object, with a fallback.
+  const cleanDescription = transaction.clean_description || 'Processando...';
   
   const dateObj = new Date(transaction.date);
   const formattedDate = dateObj.toLocaleDateString('pt-BR', { day: '2-digit', month: 'short' });
@@ -42,7 +45,7 @@ export const TransactionItem = ({ transaction, processed, categoryDetails, style
         </div>
         <div>
           <p className="font-bold text-base">{cleanDescription}</p>
-          <p className="text-sm text-gray-500 dark:text-zinc-400">{category} • {formattedDate}</p>
+          <p className="text-sm text-gray-500 dark:text-zinc-400">{details.friendlyName} • {formattedDate}</p>
         </div>
       </div>
       <span className={`font-bold text-base ${amountColor}`}>

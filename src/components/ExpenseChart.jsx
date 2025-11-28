@@ -1,11 +1,12 @@
 import React from 'react';
 import { BarChart, Bar, XAxis, YAxis, Tooltip, Legend, ResponsiveContainer, CartesianGrid } from 'recharts';
 
-const ExpenseChart = ({ transactions, processedTransactions }) => {
+const ExpenseChart = ({ transactions }) => {
+  // `processedTransactions` has been removed. We now use the category from the transaction itself.
   const expenseData = transactions
-    .filter(t => t.type === 'out' && processedTransactions[t.id])
+    .filter(t => t.type === 'out' && t.category) // We only chart processed outgoing transactions
     .reduce((acc, t) => {
-      const category = processedTransactions[t.id]?.category || 'Outros';
+      const category = t.category || 'Outros';
       const amount = Math.abs(t.amount);
 
       if (!acc[category]) {
@@ -26,7 +27,7 @@ const ExpenseChart = ({ transactions, processedTransactions }) => {
           return (
           <div className="p-3 bg-slate-900 text-white rounded-lg shadow-lg">
               <p className="font-bold">{label}</p>
-              <p className="text-sm">{`Total: R$ ${payload[0].value.toFixed(2)}`}</p>
+              <p className="text-sm">{`Total: R$ ${payload[0].value.toFixed(2).replace('.', ',')}`}</p>
           </div>
           );
       }
@@ -36,7 +37,7 @@ const ExpenseChart = ({ transactions, processedTransactions }) => {
 
   return (
     <div className="my-8">
-        <h3 className="text-lg font-bold mb-4">Análise de Despesas</h3>
+        <h3 className="text-xl font-bold mb-4">Análise de Despesas</h3>
         <div style={{ width: '100%', height: 300 }}>
             <ResponsiveContainer>
                 <BarChart data={chartData} margin={{ top: 5, right: 20, left: -10, bottom: 5 }}>

@@ -2,10 +2,10 @@ import React, { useState } from 'react';
 import { Smartphone, ArrowRight, CheckCircle } from 'lucide-react';
 
 const operators = [
-  { name: 'Vivo', logo: '/vivo.svg' },
-  { name: 'Claro', logo: '/claro.svg' },
-  { name: 'TIM', logo: '/tim.svg' },
-  { name: 'Oi', logo: '/oi.svg' },
+  { name: 'Vivo', logo: '/vivo.png', sizeClass: 'h-14' },
+  { name: 'Claro', logo: '/claro.png', sizeClass: 'h-12' },
+  { name: 'TIM', logo: '/tim.png', sizeClass: 'h-14' },
+  { name: 'Oi', logo: '/oi.png', sizeClass: 'h-12' },
 ];
 
 const rechargeValues = [15, 20, 30, 50, 100];
@@ -61,8 +61,8 @@ const RecargaService = () => {
             <button 
               key={op.name}
               onClick={() => setSelectedOperator(op.name)}
-              className={`p-2 rounded-lg border-2 flex items-center justify-center transition-all ${selectedOperator === op.name ? 'border-blue-500 bg-blue-50 dark:bg-blue-900/30' : 'border-gray-200 dark:border-zinc-700'}`}>
-              <img src={op.logo} alt={op.name} className="h-6 mx-auto object-contain" />
+              className={`p-3 rounded-lg border-2 flex items-center justify-center transition-all ${selectedOperator === op.name ? 'border-blue-500 bg-blue-50 dark:bg-blue-900/30' : 'border-gray-200 dark:border-zinc-700'}`}>
+              <img src={op.logo} alt={op.name} className={`${op.sizeClass} mx-auto object-contain`} />
             </button>
           ))}
         </div>
@@ -70,7 +70,7 @@ const RecargaService = () => {
 
       <div className="mb-6">
         <label className="font-semibold text-sm mb-2 block">Valor da Recarga</label>
-        <div className="grid grid-cols-5 gap-2">
+        <div className="grid grid-cols-3 gap-2">
           {rechargeValues.map(val => (
             <button 
               key={val}

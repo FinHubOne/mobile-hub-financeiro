@@ -42,7 +42,7 @@ const PixService = () => {
   return (
     <div className="animate-fade-in p-6 bg-white dark:bg-zinc-800 rounded-3xl shadow-sm border border-gray-100 dark:border-zinc-700">
       <div className="flex justify-between items-center">
-        <h2 className="text-xl font-bold flex items-center gap-2">
+        <h2 className="text-2xl font-bold flex items-center gap-2">
           <Zap className="text-yellow-500" /> Simular PIX
         </h2>
         {(recipient || error) && (
@@ -61,7 +61,7 @@ const PixService = () => {
               value={pixKey}
               onChange={(e) => setPixKey(e.target.value)}
               placeholder='Email, CPF/CNPJ ou Chave Aleatória'
-              className="flex-grow p-3 bg-gray-50 dark:bg-zinc-700 border border-gray-200 dark:border-zinc-600 rounded-xl focus:outline-none focus:ring-2 focus:ring-yellow-500"
+              className="flex-grow p-3 text-lg bg-gray-50 dark:bg-zinc-700 border border-gray-200 dark:border-zinc-600 rounded-xl focus:outline-none focus:ring-2 focus:ring-yellow-500"
             />
             <button 
               onClick={handleKeyLookup}
@@ -104,7 +104,7 @@ const PixService = () => {
                         <User className="text-gray-500 dark:text-gray-300"/>
                     </div>
                     <div>
-                        <p className="font-bold text-gray-900 dark:text-gray-100">{recipient.name}</p>
+                        <p className="text-lg font-bold text-gray-900 dark:text-gray-100">{recipient.name}</p>
                         <p className="text-sm text-gray-600 dark:text-gray-400">{recipient.document}</p>
                     </div>
                 </div>
